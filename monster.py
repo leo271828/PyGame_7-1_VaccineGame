@@ -99,7 +99,9 @@ class Monster(GameObject):
             self.color = [255, 255, 0]
 
     def repaint(self, screen, position):
+        
         p = super().repaint(screen, position)
+        screen.blit(self.image, (p))
         pygame.draw.circle(screen, self.color, p, self.r)
 
     def move(self, angle, step):
