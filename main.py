@@ -21,7 +21,7 @@ class Main:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode(wh)
-        pygame.display.set_caption('FireWhell火輪手槍')
+        pygame.display.set_caption('疫情求生')
 
         #物件初始化
         self.clock = pygame.time.Clock()
