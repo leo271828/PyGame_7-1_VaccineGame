@@ -98,7 +98,6 @@ class Player(GameObject):
         #如果分數超過最高就升等
         if self.score > self.level_factor[-1]:
             self.level_up()
-        zombie = self.master.monster.touch(self, True)
         #如果碰到殭屍、狙擊手、敵方子彈(還未完成)
         """
         Todo: 
