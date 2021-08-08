@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import json
 import sys
+import os #增
 
 from player import Player
 import wall
@@ -13,6 +14,7 @@ import card
 setting = json.load(open('setting.json', 'r'))
 bg = setting['bg']
 wh = setting['wh']
+background_image = pygame.transform.scale(pygame.image.load(os.path.join("images", "bg_chiheisen_green1.jpg")),(800,600)) #增
 
 class Main:
     '''負責掌控主程序'''
@@ -27,8 +29,8 @@ class Main:
     def repaint(self, screen):
         '''將各個物件顯示到螢幕上。position為視野的座標，將此變數傳到各個物件，使物件在相對於座標的地方進行繪圖。repaint繼承自GameObject'''
         position = (self.player.x, self.player.y)
-        screen.fill(bg)
-
+        screen.blit(background_image,(0,0)) #增
+        
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
         self.monster.repaint(screen, position)
@@ -47,7 +49,7 @@ class Main:
 
     def gameover(self, screen, tops=[]):
         '''結束畫面'''
-        screen.fill(bg) 
+        screen.blit(background_image,(0,0)) #增
         position = (self.player.x, self.player.y)
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
