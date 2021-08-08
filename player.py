@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-import json
+from setting import *
 import math
 
 
@@ -8,9 +8,9 @@ from game_object import GameObject
 from bullet import PlayerBullet
 
 
-wh = GameObject.setting['wh']
-speed = GameObject.setting['speed']
-distance = GameObject.setting['distance']
+wh = GameObject.setting[0]
+speed = GameObject.setting[2]
+distance = GameObject.setting[3]
 
 # touchSound = pygame.mixer.Sound('data/sound/scream.wav')
 # touchSound.set_volume(0.2)
