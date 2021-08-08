@@ -5,7 +5,7 @@ import math
 from game_object import GameObject
 
 
-distance = GameObject.setting['distance']
+distance = GameObject.setting[3]
 
 class Bullet(GameObject):
     # master may be you or enemies
