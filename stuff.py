@@ -38,7 +38,7 @@ class Stuff(GameObject):
     def __init__(self, master):
         super().__init__(master)
         self.r = 10
-        w, h = self.setting['field_wh']
+        w, h = self.setting[4]
         self.x = random.randint(-w+1000, w-1000)
         self.y = random.randint(-h+1000, h-1000)
         self.player = self.master.master.player
