@@ -33,7 +33,7 @@ class Main:
 
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
-        #怪物
+        self.monster.repaint(screen, position)
         self.stuff.repaint(screen, position)
         self.card.repaint(screen, position)
         pygame.display.flip()
@@ -53,7 +53,7 @@ class Main:
         position = (self.player.x, self.player.y)
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
-        #怪物
+        self.monster.repaint(screen, position)
         self.stuff.repaint(screen, position)
         f = pygame.font.Font('data/freesansbold.ttf', 90)
         text1 = f.render('Game Over', True, [255,255,100])
@@ -77,6 +77,7 @@ class Main:
     def reset(self):
         self.field = wall.Field(self)
         self.player = Player(self)
+        self.monster = monster.MonsterManager(self)
         #怪物
         self.stuff = stuff.StuffManager(self)
         self.card = card.CardManager(self)
