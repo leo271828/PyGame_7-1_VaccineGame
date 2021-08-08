@@ -25,9 +25,9 @@ class Wall(GameObject):
     
     def repaint(self, screen, position):
         x, y = super().repaint(screen, position)
-        pygame.draw.rect(screen, self.color, (x - w/2, y - h/2, w, h))
-        pygame.draw.rect(screen, self.color, (x - h/2, y - w/2, h, w))
-
+        screen.blit(WALL_IMAGE_1,(x - h/2, y - w/2))#增
+        screen.blit(WALL_IMAGE_2,(x - w/2, y - h/2))#增
+        
     def touch(self, person):
         for r in self.rects:
             x = min(r.x+r.w, person.x)
