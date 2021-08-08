@@ -53,7 +53,7 @@ class Main:
         position = (self.player.x, self.player.y)
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
-        self.monster.repaint(screen, position)
+        #怪物
         self.stuff.repaint(screen, position)
         f = pygame.font.Font('data/freesansbold.ttf', 90)
         text1 = f.render('Game Over', True, [255,255,100])
@@ -77,7 +77,7 @@ class Main:
     def reset(self):
         self.field = wall.Field(self)
         self.player = Player(self)
-        self.monster = monster.MonsterManager(self)
+        #怪物
         self.stuff = stuff.StuffManager(self)
         self.card = card.CardManager(self)
 
@@ -87,9 +87,7 @@ class Main:
         done = False
         self.reset()
         pygame.mixer.init()
-        sound = pygame.mixer.Sound('data/sound/Jay_Jay.wav')
-        sound.set_volume(0)
-        sound.play(-1)
+        #音檔
         while not done:
             # 這裡 e 我改成 event 因為這樣比較屌
             for event in pygame.event.get():
@@ -104,11 +102,9 @@ class Main:
                 self.gameover(self.screen, tops)
             elif self.player.blood <= 0:
                 play = False
-                sound.stop()
+                #音檔
                 tops = self.top(self.player.score)
-                # gameoverSound 我把遊戲結束的聲音關掉
-                gameoverSound = pygame.mixer.Sound('data/sound/triumph.wav')
-                # gameoverSound.play()
+                #音檔
             else:
                 self.update()
                 self.repaint(self.screen)
