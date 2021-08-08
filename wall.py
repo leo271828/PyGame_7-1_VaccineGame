@@ -1,4 +1,5 @@
 import pygame
+import os #增
 from pygame.locals import *
 from pygame import Rect
 
@@ -7,6 +8,9 @@ from game_object import GameObject
 w = 80
 h = 600
 g = 250
+
+WALL_IMAGE_1 = pygame.transform.scale(pygame.image.load(os.path.join("images", "renga_pattern.png")),(h,w)) #增
+WALL_IMAGE_2 = pygame.transform.scale(pygame.image.load(os.path.join("images", "renga_pattern2.png")),(w,h)) #增
 
 class Wall(GameObject):
     def __init__(self, master, position):
