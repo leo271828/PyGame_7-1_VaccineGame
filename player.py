@@ -99,10 +99,10 @@ class Player(GameObject):
         if self.score > self.level_factor[-1]:
             self.level_up()
         zombie = self.master.monster.touch(self, True)
-        #如果碰到殭屍、狙擊手、敵方子彈
-        if self.delay(500) and zombie:
-            self.hit(zombie)
-            #向反方向反彈
+        #如果碰到殭屍、狙擊手、敵方子彈(還未完成)
+        """
+        Todo: 
+        """
         #更新玩家子彈
         for b in self.bullet:
             b.update()
