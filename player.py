@@ -34,8 +34,6 @@ class Player(GameObject):
         self.v = [0, 0]
         #外型
         self.color = [50, 200, 200]
-        self.sound = pygame.mixer.Sound('data/sound/scream.wav')
-        self.sound.set_volume(0.2)
         #配件
         self.gun = PlayerGun(self)
         self.bullet = []
@@ -77,31 +75,21 @@ class Player(GameObject):
         self.gun.repaint(screen, position)
         for b in self.bullet:
             b.repaint(screen, position)
-
-        score = self.map(self.level_factor[-2], self.level_factor[-1], 0, 1000, self.score)
-        score_block = Rect(170, 50, score, 30)
-        pygame.draw.rect(screen, [0, 255, 255], score_block)
+        
+        # 獲得疫苗數（未完成）
         b = -1
+        # 繪製血量
         for b in range(int(self.blood)):
             pygame.draw.rect(screen, [255,0,0], (x-70+14*b, y-90, 10, 10))
         b += 1
         w = max(self.map(0, 1, 0, 10, (self.blood - int(self.blood))), 0)
         if w:
             pygame.draw.rect(screen, [255, 0, 0], (x-70+14*b, y-90, w, 10))
-
-        font = pygame.font.Font('data/freesansbold.ttf', 30)
-        text = font.render('level: %s' % self.level, True, [255, 255, 255])
-        screen.blit(text, (50,50))
+        # 繪製關卡數
 
     def update(self):
         '''更新狀態'''
-        #如果分數超過最高就升等
-        if self.score > self.level_factor[-1]:
-            self.level_up()
         #如果碰到殭屍、狙擊手、敵方子彈(還未完成)
-        """
-        Todo: 
-        """
         #更新玩家子彈
         for b in self.bullet:
             b.update()

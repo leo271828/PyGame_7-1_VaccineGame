@@ -9,7 +9,6 @@ from player import Player
 import wall
 import monster
 import stuff
-import card
 
 setting = [wh, bg, speed, distance, field_wh]
 bg = setting[1]
@@ -35,7 +34,7 @@ class Main:
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
         self.stuff.repaint(screen, position)
-        self.card.repaint(screen, position)
+        # 升級機制
         pygame.display.flip()
         pygame.display.update()
 
@@ -45,7 +44,7 @@ class Main:
         self.player.update()
         self.field.update()
         self.stuff.update()
-        self.card.update()
+        # 升級機制
 
     def gameover(self, screen, tops=[]):
         '''結束畫面'''
@@ -80,7 +79,7 @@ class Main:
         self.player = Player(self)
         #怪物
         self.stuff = stuff.StuffManager(self)
-        self.card = card.CardManager(self)
+        # 升級機制
 
     def begin(self):
         '''主程序'''
@@ -130,7 +129,6 @@ class Main:
         with open('data/score.txt', 'w') as file:
             file.write('\n'.join(score_list))
         return score_list
-
 
 root = Main()
 root.begin()
