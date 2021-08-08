@@ -1,4 +1,4 @@
-import json
+from setting import *
 import pygame
 import math
 import random
@@ -6,10 +6,10 @@ import random
 
 pygame.init()
 F = 0.88
-setting = json.load(open('setting.json', 'r'))
+setting = [wh, bg, speed, distance, field_wh]
 
 class GameObject:
-    setting = json.load(open('setting.json', 'r'))
+    setting = [wh, bg, speed, distance, field_wh]
     
     def __init__(self, master=None):
         self.master = master
@@ -22,8 +22,8 @@ class GameObject:
         self.touchable = []
 
     def repaint(self, screen, position):
-        return int(self.x - position[0] + self.setting['wh'][0]/2), \
-        int(self.y - position[1] + self.setting['wh'][1]/2)
+        return int(self.x - position[0] + self.setting[0][0]/2), \
+        int(self.y - position[1] + self.setting[0][1]/2)
 
     def update(self,touch=lambda:None, f=F):
         if touch():
