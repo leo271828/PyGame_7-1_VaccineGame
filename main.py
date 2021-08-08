@@ -28,12 +28,12 @@ class Main:
 
     def repaint(self, screen):
         '''將各個物件顯示到螢幕上。position為視野的座標，將此變數傳到各個物件，使物件在相對於座標的地方進行繪圖。repaint繼承自GameObject'''
+        # monster還未完成所以未加進來
         position = (self.player.x, self.player.y)
         screen.blit(background_image,(0,0)) #增
 
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
-        self.monster.repaint(screen, position)
         self.stuff.repaint(screen, position)
         self.card.repaint(screen, position)
         pygame.display.flip()
@@ -41,19 +41,19 @@ class Main:
 
     def update(self):
         '''物件更新'''
+        # monster還未完成所以未加進來
         self.player.update()
         self.field.update()
-        self.monster.update()
         self.stuff.update()
         self.card.update()
 
     def gameover(self, screen, tops=[]):
         '''結束畫面'''
+        # monster還未完成所以未加進來
         screen.blit(background_image,(0,0)) #增
         position = (self.player.x, self.player.y)
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
-        self.monster.repaint(screen, position)
         self.stuff.repaint(screen, position)
         f = pygame.font.Font('data/freesansbold.ttf', 90)
         text1 = f.render('Game Over', True, [255,255,100])
@@ -75,9 +75,9 @@ class Main:
         pygame.display.update()
 
     def reset(self):
+        # monster還未完成所以未加進來
         self.field = wall.Field(self)
         self.player = Player(self)
-        self.monster = monster.MonsterManager(self)
         #怪物
         self.stuff = stuff.StuffManager(self)
         self.card = card.CardManager(self)
