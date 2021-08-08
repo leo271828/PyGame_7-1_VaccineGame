@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from setting import *
 import math
+import os
 
 
 from game_object import GameObject
@@ -16,6 +17,8 @@ distance = GameObject.setting[3]
 # touchSound.set_volume(0.2)
 # upSound = pygame.mixer.Sound('data/sound/fairydust.wav')
 # upSound.set_volume(1)
+#換入圖片
+Player_image = pygame.image.load(os.path.join("images", "animalface_neko.png"))
 
 
 
@@ -51,6 +54,10 @@ class Player(GameObject):
         self.HP = 5
         self.DEF = 0
         
+        #圖片
+        
+        self.player = pygame.transform.scale(Player_image, (50, 50))
+        
     def next(self):
         d = 5
         an = 10
@@ -65,7 +72,8 @@ class Player(GameObject):
         在此實做player的座標轉換是為了未來的鏡頭移動所準備，在實做此功能後，未來可維護性較高
         '''
         x, y = super().repaint(screen, position)
-        pygame.draw.circle(screen, self.color, (x, y), self.r, 5)
+        screen.blit(self.player, (x-25,y-25))
+        #pygame.draw.circle(screen, self.color, (x, y), self.r, 5)
         self.gun.repaint(screen, position)
         for b in self.bullet:
             b.repaint(screen, position)
