@@ -3,7 +3,7 @@ from pygame.locals import *
 
 from game_object import *
 
-wh = setting['wh']
+wh = setting[0]
 cardName = ["HP",
             "ATK",
             "CD",
