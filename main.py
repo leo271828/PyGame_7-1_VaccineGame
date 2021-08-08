@@ -33,7 +33,7 @@ class Main:
 
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
-        self.monster.repaint(screen, position)
+        #怪物
         self.stuff.repaint(screen, position)
         self.card.repaint(screen, position)
         pygame.display.flip()
