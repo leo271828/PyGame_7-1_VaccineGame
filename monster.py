@@ -102,7 +102,7 @@ class Monster(GameObject):
         
         p = super().repaint(screen, position)
         screen.blit(self.image, (p))
-        pygame.draw.circle(screen, self.color, p, self.r)
+        #pygame.draw.circle(screen, self.color, p, self.r)
 
     def move(self, angle, step):
         self.x += step * math.cos(angle)
