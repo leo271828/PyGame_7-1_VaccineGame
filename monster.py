@@ -2,10 +2,15 @@ import pygame
 from pygame.locals import *
 import math
 import random
+import os
 
 from game_object import *
 from player import Gun, SniperGun
 from bullet import SniperBullet
+
+#匯入圖片
+Virus_blue = pygame.image.load(os.path.join("images", "virus_blue.png"))
+Virus_red = pygame.image.load(os.path.join("images", "virus_red.png"))
 
 
 z_capped = lambda x:20 + x*2
@@ -66,10 +71,23 @@ class Monster(GameObject):
         self.blood = 1.0
         self.power = 1.0
         self.range = lambda: 600 + self.player.level * 50 > self.distance(self)
+        #圖片
+        self.blue  = pygame.transform.scale(Virus_blue, (40, 40))
+        self.red  = pygame.transform.scale(Virus_red, (40, 40))
+        self.image = self.red
+        
         if color:
             self.color = color
+            self.image = self.red
         else:
             self.color = [random.randint(100, 255) for i in range(3)]
+            num = random.randint(0,1)
+            if num == 0:
+                #print(1)
+                self.image = self.red
+            else:
+                #print(2)
+                self.image = self.blue 
         if position:
             self.x, self.y = position
         else:
