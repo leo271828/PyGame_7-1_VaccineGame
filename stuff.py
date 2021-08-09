@@ -4,7 +4,7 @@ import random
 
 from game_object import *
 
-
+heart_image = pygame.transform.scale(pygame.image.load("images/heart.png"), (40, 40))
 h_capped = 70
 s_capped = 300
 
@@ -26,7 +26,8 @@ class StuffManager(Manager):
         elif len(self.hearts) < h_capped:
             self.hearts.append(Heart(self))
         elif len(self.stars) < s_capped:
-            self.stars.append(Star(self))
+            #self.stars.append(Star(self))
+            self.hearts.append(Heart(self))
         for a in self.live:
             a.update()
 
@@ -50,6 +51,7 @@ class Stuff(GameObject):
     def repaint(self, screen, position):
         p = super().repaint(screen, position)
         pygame.draw.circle(screen, self.color, p, self.r)
+        screen.blit(self.image, (p[0]-16, p[1]-16))
 
     def update(self):
         if not self.live:
@@ -71,6 +73,7 @@ class Heart(Stuff):
     def __init__(self, master):
         super().__init__(master)
         self.color = [255, 0, 0]
+        self.image = heart_image
 
     def plus(self):
         self.player.addBlood()
@@ -83,18 +86,18 @@ class Heart(Stuff):
             pass
 
 
-class Star(Stuff):
-    def __init__(self, master):
-        super().__init__(master)
-        self.color = [0, 255, 255]
-
-    def plus(self):
-        self.player.score += 1
-
-    def kill(self):
-        try:
-            self.master.stars.remove(self)
-            self.master.update_live()
-        except ValueError:
-            pass
+#class Star(Stuff):
+#    def __init__(self, master):
+#        super().__init__(master)
+#        self.color = [0, 255, 255]
+#
+#    def plus(self):
+#        self.player.score += 1
+#
+#    def kill(self):
+#        try:
+#            self.master.stars.remove(self)
+#            self.master.update_live()
+#        except ValueError:
+#            pass
 
