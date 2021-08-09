@@ -23,7 +23,7 @@ class Bullet(GameObject):
         self.move(self.angle, distance)
         self.power = power
     #口罩子彈
-     def mask_repaint(self, screen, position):
+    def mask_repaint(self, screen, position):
         xy = super().repaint(screen, position)
         self.mask = pygame.transform.scale(Mask_image, (50, 50))
         self.image = self.mask
