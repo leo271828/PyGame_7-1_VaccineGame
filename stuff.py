@@ -5,14 +5,13 @@ import random
 from game_object import *
 
 heart_image = pygame.transform.scale(pygame.image.load("images/heart.png"), (40, 40))
-h_capped = 70
-s_capped = 300
+h_capped = 300
+
 
 class StuffManager(Manager):
     def __init__(self, master):
         super().__init__(master)
         self.hearts = []
-        self.stars = []
 
     def repaint(self, screen, position):
         for h in self.live:
@@ -21,18 +20,15 @@ class StuffManager(Manager):
     def update(self):
         if self.delay(1000):
             self.update_live()
-            super().update(self.hearts+self.stars)
+            super().update(self.hearts)
             self.last_time = pygame.time.get_ticks()
         elif len(self.hearts) < h_capped:
-            self.hearts.append(Heart(self))
-        elif len(self.stars) < s_capped:
-            #self.stars.append(Star(self))
             self.hearts.append(Heart(self))
         for a in self.live:
             a.update()
 
     def update_live(self):
-        super().update_live(self.hearts+self.stars)
+        super().update_live(self.hearts)
 
 
 class Stuff(GameObject):
@@ -85,19 +81,4 @@ class Heart(Stuff):
         except ValueError:
             pass
 
-
-#class Star(Stuff):
-#    def __init__(self, master):
-#        super().__init__(master)
-#        self.color = [0, 255, 255]
-#
-#    def plus(self):
-#        self.player.score += 1
-#
-#    def kill(self):
-#        try:
-#            self.master.stars.remove(self)
-#            self.master.update_live()
-#        except ValueError:
-#            pass
 
