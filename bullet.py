@@ -1,11 +1,12 @@
 import pygame
 from pygame.locals import *
 import math
+import os
 
 from game_object import GameObject
 
-
 distance = GameObject.setting[3]
+Mask_image = pygame.image.load(os.path.join("images", "mask.png"))
 
 class Bullet(GameObject):
     # master may be you or enemies
@@ -21,7 +22,13 @@ class Bullet(GameObject):
         self.v = self.master.v.copy()
         self.move(self.angle, distance)
         self.power = power
-
+    #口罩子彈
+     def mask_repaint(self, screen, position):
+        xy = super().repaint(screen, position)
+        self.mask = pygame.transform.scale(Mask_image, (50, 50))
+        self.image = self.mask
+        screen.blit(self.image, (xy))
+    #圓形子彈
     def repaint(self, screen, position):
         xy = super().repaint(screen, position)
         pygame.draw.circle(screen, self.color, xy, self.r)
@@ -44,6 +51,15 @@ class Bullet(GameObject):
         pass
 
 class PlayerBullet(Bullet):
+    def repaint(self, screen, position,change):
+        self.change = change
+        #print(self.change)
+        if self.change == 1:
+            xy = super().repaint(screen, position)
+        else:
+            xy = super().mask_repaint(screen, position)
+            self.mask = pygame.transform.scale(Mask_image, (50, 50))
+            self.image = self.mask
     def update(self):
         # 其實我看不懂這個 f 
         # monster.的部分還沒加進來
