@@ -19,7 +19,8 @@ distance = GameObject.setting[3]
 # upSound.set_volume(1)
 #換入圖片
 Player_image = pygame.image.load(os.path.join("images", "animalface_neko.png"))
-
+Alcohol_image = pygame.image.load(os.path.join("images", "alcohol.png"))
+Mask_image = pygame.image.load(os.path.join("images", "mask.png"))
 
 
 class Player(GameObject):
@@ -74,7 +75,7 @@ class Player(GameObject):
         #pygame.draw.circle(screen, self.color, (x, y), self.r, 5)
         self.gun.repaint(screen, position)
         for b in self.bullet:
-            b.repaint(screen, position)
+            b.repaint(screen, position,self.gun_change)
         
         # 獲得疫苗數（未完成）
         b = -1
@@ -89,11 +90,17 @@ class Player(GameObject):
 
     def update(self):
         '''更新狀態'''
-        #如果碰到殭屍、狙擊手、敵方子彈(還未完成)
+        # 如果碰到殭屍、狙擊手、敵方子彈
+        zombie = self.master.monster.touch(self, True)
+        if self.delay(500) and zombie:
+            self.hit(zombie)
+            # 向反方向反彈
         #更新玩家子彈
         for b in self.bullet:
             b.update()
         
+        
+            
         #如果按下按鍵就移動
         if self.iskey(K_w):
             self.v[1] += -self.speed
@@ -103,6 +110,14 @@ class Player(GameObject):
             self.v[0] += self.speed
         if self.iskey(K_a):
             self.v[0] += -self.speed
+        if self.iskey(K_f):
+            if self.gun_change == 1 :
+                self.gun = self.Player_mask
+                self.gun_change = 2
+            else :
+                self.gun = self.Player_alcohol
+                self.gun_change = 1
+                
         super().update(lambda :self.master.field.touch(self))
         now = pygame.time.get_ticks()
         self.cooldown = self.map(0, self.CD, 0, 1, min(now - self.last_shut, self.CD))
@@ -156,7 +171,7 @@ class Gun(GameObject):
         self.shuting = False
         self.last_time = 0
 
-    def repaint(self, screen, position):
+    def Sniper_repaint(self, screen, position):
         x, y = super().repaint(screen, position)
         point = [(0, -90), (10, -70), (-10, -70)]
         angle = self.angle + self.master.angle
@@ -168,6 +183,14 @@ class Gun(GameObject):
         color = [c * self.master.cooldown for c in self.master.color] if type(self.master).__name__ == 'Player' else self.master.color
         pygame.draw.polygon(screen, color, newpoint)
 
+    def Player_repaint(self, screen, position):
+        x, y = super().repaint(screen, position)
+        px = 0
+        py = -80
+        angle = self.angle + self.master.angle
+        nx = px * math.cos(angle + math.pi / 2) - py * math.sin(angle + math.pi / 2) + x-25
+        ny = px * math.cos(angle) - py * math.sin(angle) + y-25
+        screen.blit(self.image, (nx, ny))
     def update(self):
         self.x = self.master.x
         self.y = self.master.y
@@ -195,11 +218,20 @@ class SniperGun(Gun):
     def __init__(self, master) -> None:
         super().__init__(master)
 
+    def repaint(self, screen, position):
+        super().Sniper_repaint(screen, position)
+
 # 玩家的槍
-class PlayerGun(Gun):
+class PlayerGun_alcohol(Gun):
     def __init__(self, master):
         super().__init__(master)
-    
+        self.alcohol = pygame.transform.scale(Alcohol_image, (50, 50))
+        self.image = self.alcohol
+
+    def repaint(self,screen,position):
+        super().Player_repaint(screen, position)
+        self.image = self.alcohol
+
     def update(self):
         self.x, self.y = self.master.x, self.master.y
         # 計算滑鼠相對於中心的角度
@@ -208,5 +240,26 @@ class PlayerGun(Gun):
         dy = mouse_y - wh[1]/2
         self.angle = math.atan2(dy, dx)
         
+        if self.shuting:
+            self.shut()
+
+class PlayerGun_mask(Gun):
+    def __init__(self, master):
+        super().__init__(master)
+        self.mask = pygame.transform.scale(Mask_image, (50, 50))
+        self.image = self.mask
+
+    def repaint(self, screen, position):
+        super().Player_repaint(screen, position)
+        self.image = self.mask
+
+    def update(self):
+        self.x, self.y = self.master.x, self.master.y
+        # 計算滑鼠相對於中心的角度
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        dx = mouse_x - wh[0] / 2
+        dy = mouse_y - wh[1] / 2
+        self.angle = math.atan2(dy, dx)
+
         if self.shuting:
             self.shut()
