@@ -131,10 +131,12 @@ class Monster(GameObject):
             self.player.addPoint(self.score)
 
 
+
 class Zombie(Monster):
     def __init__(self, master):
         super().__init__(master)
         self.speed = 0.75
+        self.monster_key = 2
     def repaint(self,screen,position):
         super().repaint(screen, position)
         self.image = self.person
@@ -142,10 +144,17 @@ class Zombie(Monster):
     def update(self):
         if self.range():
             self.near((self.player.x, self.player.y), self.speed)
+        #print(self.Gun_key,self.monster_key)
         super().update(lambda :self.field.touch(self) or self.master.touch(self, False))
         if not self.live:
             self.kill()
+            print(2)
 
+    def hit(self, power):
+        self.key = self.player.get()
+        print(self.key, self.monster_key)
+        if self.key == self.monster_key:
+            super().hit(power)
     def kill(self):
         self.master.zombies.remove(self)
         self.master.update_live()
@@ -159,12 +168,14 @@ class Sniper(Monster):
         self.angle = 0
         self.shuting = True
         self.gun.shuting = True
+        self.monster_key = 1
+
     
     def repaint(self, screen, position):
         super().repaint(screen, position)
         self.gun.repaint(screen, position)
         self.image = self.blue
-        
+
     def update(self):
         x, y = self.x - self.player.x, self.y - self.player.y
         self.angle = math.atan(y/x)
@@ -183,12 +194,18 @@ class Sniper(Monster):
                 self.near((self.player.x, self.player.y), -self.speed)
             super().update(lambda :self.field.touch(self) or self.master.touch(self, False))
             self.gun.update()
-        if not self.live:
+        if not self.live :
             self.kill()
-
+            print(1)
+    def hit(self, power):
+        self.key = self.player.get()
+        print(self.key,self.monster_key)
+        if self.key == self.monster_key:
+            super().hit(power)
     def kill(self):
         self.master.snipers.remove(self)
         self.master.update_live()
         self.gun = None
+
 
 
