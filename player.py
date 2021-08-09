@@ -163,7 +163,8 @@ class Player(GameObject):
         self.level_factor.append(next(self.next_score))
         self.master.card.level_up()
         # upSound.play()
-
+    def get(self):
+        return self.gun_change
 
 class Gun(GameObject):
     def __init__(self, master):
