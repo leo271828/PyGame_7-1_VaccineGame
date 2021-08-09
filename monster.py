@@ -10,7 +10,7 @@ from bullet import SniperBullet
 
 #匯入圖片
 Virus_blue = pygame.image.load(os.path.join("images", "virus_blue.png"))
-Virus_red = pygame.image.load(os.path.join("images", "virus_red.png"))
+Sick_person = pygame.image.load(os.path.join("images", "sick_person.png"))
 
 
 z_capped = lambda x:20 + x*2
@@ -73,21 +73,14 @@ class Monster(GameObject):
         self.range = lambda: 600 + self.player.level * 50 > self.distance(self)
         #圖片
         self.blue  = pygame.transform.scale(Virus_blue, (40, 40))
-        self.red  = pygame.transform.scale(Virus_red, (40, 40))
-        self.image = self.red
+        self.person  = pygame.transform.scale(Sick_person, (50, 50))
+        self.image = self.person
         
         if color:
             self.color = color
             self.image = self.red
         else:
             self.color = [random.randint(100, 255) for i in range(3)]
-            num = random.randint(0,1)
-            if num == 0:
-                #print(1)
-                self.image = self.red
-            else:
-                #print(2)
-                self.image = self.blue 
         if position:
             self.x, self.y = position
         else:
@@ -142,6 +135,9 @@ class Zombie(Monster):
     def __init__(self, master):
         super().__init__(master)
         self.speed = 0.75
+    def repaint(self,screen,position):
+        super().repaint(screen, position)
+        self.image = self.person
 
     def update(self):
         if self.range():
@@ -167,7 +163,8 @@ class Sniper(Monster):
     def repaint(self, screen, position):
         super().repaint(screen, position)
         self.gun.repaint(screen, position)
-
+        self.image = self.blue
+        
     def update(self):
         x, y = self.x - self.player.x, self.y - self.player.y
         self.angle = math.atan(y/x)
