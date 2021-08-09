@@ -30,7 +30,7 @@ class Main:
         # monster還未完成所以未加進來
         position = (self.player.x, self.player.y)
         screen.blit(background_image,(0,0)) #增
-
+        self.monster.repaint(screen, position)
         self.field.repaint(screen, position)
         self.player.repaint(screen, position)
         self.stuff.repaint(screen, position)
@@ -42,6 +42,7 @@ class Main:
         '''物件更新'''
         # monster還未完成所以未加進來
         self.player.update()
+        self.monster.update()
         self.field.update()
         self.stuff.update()
         # 升級機制
@@ -52,6 +53,7 @@ class Main:
         screen.blit(background_image,(0,0)) #增
         position = (self.player.x, self.player.y)
         self.field.repaint(screen, position)
+        self.monster.repaint(screen, position)
         self.player.repaint(screen, position)
         self.stuff.repaint(screen, position)
         f = pygame.font.Font('data/freesansbold.ttf', 90)
@@ -78,6 +80,7 @@ class Main:
         self.field = wall.Field(self)
         self.player = Player(self)
         #怪物
+        self.monster = monster.MonsterManager(self)
         self.stuff = stuff.StuffManager(self)
         # 升級機制
 
