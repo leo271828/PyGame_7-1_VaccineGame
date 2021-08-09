@@ -7,6 +7,7 @@ import random
 pygame.init()
 F = 0.88
 setting = [wh, bg, speed, distance, field_wh]
+heart_image = pygame.transform.scale(pygame.image.load("images/heart.png"), (40, 40))
 
 class GameObject:
     setting = [wh, bg, speed, distance, field_wh]
@@ -20,6 +21,7 @@ class GameObject:
         self.color = []
         self.last_time = 0
         self.touchable = []
+        self.image = heart_image
 
     def repaint(self, screen, position):
         return int(self.x - position[0] + self.setting[0][0]/2), \
