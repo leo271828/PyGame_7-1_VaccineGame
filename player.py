@@ -36,7 +36,11 @@ class Player(GameObject):
         #外型
         self.color = [50, 200, 200]
         #配件
-        self.gun = PlayerGun(self)
+        self.gun = PlayerGun_alcohol(self)
+        self.gun_change = 1
+        self.Player_alcohol = PlayerGun_alcohol(self)
+        self.Player_mask = PlayerGun_mask(self)
+        
         self.bullet = []
         self.shuting = False
         self.level_factor = [0, 9]
