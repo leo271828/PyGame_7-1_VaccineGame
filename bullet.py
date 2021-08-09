@@ -63,7 +63,7 @@ class PlayerBullet(Bullet):
     def update(self):
         # 其實我看不懂這個 f 
         # monster.的部分還沒加進來
-        f = lambda:self.master.master.field.touch(self)
+        f = lambda:self.master.master.field.touch(self) or self.master.master.monster.touch(self)
         super().update(f)
 
     def kill(self):
