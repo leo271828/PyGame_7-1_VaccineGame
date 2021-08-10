@@ -21,6 +21,7 @@ distance = GameObject.setting[3]
 Player_image = pygame.image.load(os.path.join("images", "animalface_neko.png"))
 Alcohol_image = pygame.image.load(os.path.join("images", "alcohol.png"))
 Mask_image = pygame.image.load(os.path.join("images", "mask.png"))
+Vaccine_image = pygame.image.load(os.path.join("images", "vaccine.png"))
 
 
 class Player(GameObject):
@@ -60,6 +61,7 @@ class Player(GameObject):
         #圖片
         
         self.player = pygame.transform.scale(Player_image, (50, 50))
+        self.vaccine = pygame.transform.scale(Vaccine_image, (40, 80))
         
     def next(self):
         d = 5
@@ -70,6 +72,8 @@ class Player(GameObject):
             s += an
             yield s
 
+    def addvaccine(self,vaccine):
+        self.sumvaccine += vaccine
     def repaint(self, screen, position):
         '''
         在此實做player的座標轉換是為了未來的鏡頭移動所準備，在實做此功能後，未來可維護性較高
@@ -81,7 +85,12 @@ class Player(GameObject):
         for b in self.bullet:
             b.repaint(screen, position,self.gun_change)
         
-        # 獲得疫苗數（未完成）
+        # 獲得疫苗數
+        font = pygame.font.Font('data/freesansbold.ttf', 30)
+        text = font.render(': %s' % self.sumvaccine, True, [255, 255, 255])
+        screen.blit(self.vaccine,(30,30))
+        screen.blit(text, (70, 50))
+        
         b = -1
         # 繪製血量
         for b in range(int(self.blood)):
