@@ -195,7 +195,6 @@ class Sniper(Monster):
     def kill(self):
         self.master.snipers.remove(self)
         self.master.update_live()
-        self.master.update_live()
         self.gun = None
 
 
