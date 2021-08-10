@@ -57,6 +57,7 @@ class Player(GameObject):
         self.blood = 5
         self.HP = 5
         self.DEF = 0
+        self.sumvaccine = 0
         
         #圖片
         
