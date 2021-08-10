@@ -8,13 +8,13 @@ from game_object import *
 from player import Gun, SniperGun
 from bullet import SniperBullet
 
-#匯入圖片
+# 匯入圖片
 Virus_blue = pygame.image.load(os.path.join("images", "virus_blue.png"))
 Sick_person = pygame.image.load(os.path.join("images", "sick_person.png"))
 
+z_capped = lambda x: 20 + x * 2
+s_capped = lambda x: 15 + x * 2
 
-z_capped = lambda x:20 + x*2
-s_capped = lambda x:15 + x*2
 
 class MonsterManager(Manager):
     def __init__(self, master):
@@ -29,7 +29,7 @@ class MonsterManager(Manager):
     def update(self):
         if pygame.time.get_ticks() - self.last_time > 1000:
             self.update_live()
-            super().update(self.zombies+self.snipers)
+            super().update(self.zombies + self.snipers)
             self.last_time = pygame.time.get_ticks()
         elif len(self.zombies) < z_capped(self.player.level):
             self.zombies.append(Zombie(self))
@@ -49,7 +49,7 @@ class MonsterManager(Manager):
         return None
 
     def update_live(self):
-        super().update_live(self.zombies+self.snipers)
+        super().update_live(self.zombies + self.snipers)
 
     def repaint(self, screen, position):
         for i in self.live + self.bullet:
@@ -58,6 +58,7 @@ class MonsterManager(Manager):
 
 class Monster(GameObject):
     '''怪物的父類別'''
+
     def __init__(self, master, position=None, color=None):
         super().__init__(master)
         self.player = master.player
@@ -65,23 +66,22 @@ class Monster(GameObject):
         self.speed = 1
         self.angle = 0
         self.color = [0, 0, 255]
-        self.score = 5
         self.r = 30
         self.live = True
         self.blood = 1.0
         self.power = 1.0
         self.range = lambda: 600 + self.player.level * 50 > self.distance(self)
-        #圖片
-        self.blue  = pygame.transform.scale(Virus_blue, (40, 40))
-        self.person  = pygame.transform.scale(Sick_person, (50, 50))
+        # 圖片
+        self.blue = pygame.transform.scale(Virus_blue, (40, 40))
+        self.person = pygame.transform.scale(Sick_person, (40, 40))
         self.image = self.person
-        
+
         if position:
             self.x, self.y = position
         else:
             w, h = self.setting[4]
-            self.x = random.randint(-w+1000, w-1000)
-            self.y = random.randint(-h+1000, h-1000)
+            self.x = random.randint(-w + 1000, w - 1000)
+            self.y = random.randint(-h + 1000, h - 1000)
         if self.field.touch(self, True):
             self.live = False
             self.color = [255, 255, 0]
@@ -99,29 +99,28 @@ class Monster(GameObject):
             self.y -= step * math.sin(angle)
 
     def near(self, position, step):
-        x, y = self.x-position[0], self.y-position[1]
+        x, y = self.x - position[0], self.y - position[1]
         distance = (x ** 2 + y ** 2) ** 0.5
-        self.v[0] -= x/distance * step
-        self.v[1] -= y/distance * step
+        self.v[0] -= x / distance * step
+        self.v[1] -= y / distance * step
 
     def touch(self, person):
         if person is self:
             return None
         d = self.distance(person)
-        result = self if d < self.r+person.r else None
+        result = self if d < self.r + person.r else None
         if person in self.player.bullet and result:
             self.hit(person.power)
             self.near((person.x, person.y), -20)
         return result
 
     def distance(self, person):
-        return ((person.x - self.x)**2 + (person.y - self.y)**2) ** 0.5
+        return ((person.x - self.x) ** 2 + (person.y - self.y) ** 2) ** 0.5
 
     def hit(self, power):
         self.blood -= power
-        if self.blood  <= 0:
+        if self.blood <= 0:
             self.live = False
-            self.player.addPoint(self.score)
 
 
 class Zombie(Monster):
@@ -129,21 +128,25 @@ class Zombie(Monster):
         super().__init__(master)
         self.speed = 0.75
         self.monster_key = 2
-    def repaint(self,screen,position):
+
+    # 更換圖片
+    def repaint(self, screen, position):
         super().repaint(screen, position)
         self.image = self.person
 
     def update(self):
         if self.range():
             self.near((self.player.x, self.player.y), self.speed)
-        super().update(lambda :self.field.touch(self) or self.master.touch(self, False))
+        super().update(lambda: self.field.touch(self) or self.master.touch(self, False))
         if not self.live:
             self.kill()
 
     def hit(self, power):
+        # 判斷子彈跟怪物是否一樣
         self.key = self.player.get()
         if self.key == self.monster_key:
             super().hit(power)
+
     def kill(self):
         self.master.zombies.remove(self)
         self.master.update_live()
@@ -153,49 +156,48 @@ class Sniper(Monster):
     def __init__(self, master):
         super().__init__(master)
         self.speed = 1.5
-        self.gun = SniperGun(self) # 改成 SniperGun
+        self.gun = SniperGun(self)  # 改成 SniperGun
         self.angle = 0
         self.shuting = True
         self.gun.shuting = True
         self.monster_key = 1
 
-    
     def repaint(self, screen, position):
         super().repaint(screen, position)
         self.gun.repaint(screen, position)
+        # 更換圖片
         self.image = self.blue
 
     def update(self):
         x, y = self.x - self.player.x, self.y - self.player.y
-        self.angle = math.atan(y/x)
+        self.angle = math.atan(y / x)
         if x > 0:
             self.angle += math.pi
             pass
-        d = (x**2 + y**2) ** 0.5
+        d = (x ** 2 + y ** 2) ** 0.5
         if self.range():
             if d > 600:
                 self.near((self.player.x, self.player.y), self.speed)
-            elif pygame.time.get_ticks()-self.last_time > 1300:
+            elif pygame.time.get_ticks() - self.last_time > 1300:
                 self.master.bullet.append(SniperBullet(self, 20))
                 self.master.update_live()
                 self.last_time = pygame.time.get_ticks()
             elif d < 400:
                 self.near((self.player.x, self.player.y), -self.speed)
-            super().update(lambda :self.field.touch(self) or self.master.touch(self, False))
+            super().update(lambda: self.field.touch(self) or self.master.touch(self, False))
             self.gun.update()
-        if not self.live :
+        if not self.live:
             self.kill()
-            
+
     def hit(self, power):
+        # 判斷子彈跟怪物是否一樣
         self.key = self.player.get()
         if self.key == self.monster_key:
-            self.player.addvaccine(random.randint(1,3))
+            # 亂數增加疫苗
+            self.player.addvaccine(random.randint(1, 6))
             super().hit(power)
-            
+
     def kill(self):
         self.master.snipers.remove(self)
         self.master.update_live()
         self.gun = None
-
-
-
