@@ -85,8 +85,14 @@ class Field(GameObject):
         self.walls.append(Wall(self, (mid[0] + b,mid[1] - a)))
 
     def update(self):
+        # 當貓咪回家時，疫苗歸零
+        p = self.master.player
+        # print(p.x, p.y)
+        if self.house.rect.collidepoint(p.x, p.y):
+            self.house.total += p.sumvaccine
+            p.sumvaccine = 0
+
         if pygame.time.get_ticks() - self.last_time > 500:
-            p = self.master.player
             self.live_walls = [w for w in self.walls if abs(w.x-p.x) < 1500 and abs(w.y-p.y) < 1500 ]
             self.last_time = pygame.time.get_ticks()
 
@@ -111,8 +117,10 @@ class House(GameObject):
         super().__init__(master)
         self.image = house_image
         self.total = 0
+        self.rect = pygame.Rect(0, 4700, house_x, house_y)
 
     def repaint(self, screen, position):
         # 相對於畫面正中心點的位置 (x, y) = (400, -4500)
         x, y = super().repaint(screen, position)
         screen.blit(house_image, (x - house_x/2, y - house_y/2 + 4780)) 
+        self.rect = pygame.Rect(0, 4700, house_x, house_y)
