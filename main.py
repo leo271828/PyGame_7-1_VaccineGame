@@ -12,8 +12,8 @@ import monster
 import stuff
 
 setting = [wh, bg, speed, distance, field_wh]
-bg = setting[1]
-wh = setting[0]
+#bg = setting[1]     
+wh = setting[0]     # [width, height]
 background_image = pygame.transform.scale(pygame.image.load(os.path.join("images", "bg_chiheisen_green1.jpg")),(800,600)) #增
 
 class Main:
@@ -134,11 +134,11 @@ class Main:
             
     # time label
     def timer(self, f, minute, second, time_rect_size=60):
-        w, h = setting[0]
-        pygame.draw.rect(self.screen, (0, 0, 0, 0), (0, w - f.get_height(), time_rect_size, 80))
+        #w, h = setting[0]
+        pygame.draw.rect(self.screen, (0, 0, 0, 0), (0, wh[0] - f.get_height(), time_rect_size, 80))
         text_time = f.render(str(minute) + ':' + str(second), True, [255, 255, 255])
         #print(minute, second)
-        self.screen.blit(text_time, ((time_rect_size - f.get_linesize() * 1.38) / 2, h - f.get_height()))
+        self.screen.blit(text_time, ((time_rect_size - f.get_linesize() * 1.38) / 2, wh[1] - f.get_height()))
         pygame.display.update()
     
     # 其實也不用算排行 下面一坨也可以刪掉
