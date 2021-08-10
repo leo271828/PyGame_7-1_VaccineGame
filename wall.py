@@ -8,9 +8,10 @@ from game_object import GameObject
 w = 80
 h = 600
 g = 250
-
+house_x, house_y = 300, 300
 WALL_IMAGE_1 = pygame.transform.scale(pygame.image.load(os.path.join("images", "renga_pattern.png")),(h,w)) #增
 WALL_IMAGE_2 = pygame.transform.scale(pygame.image.load(os.path.join("images", "renga_pattern2.png")),(w,h)) #增
+house_image = pygame.transform.scale(pygame.image.load('images/house.png'), (house_x, house_y))
 
 class Wall(GameObject):
     def __init__(self, master, position):
@@ -58,6 +59,9 @@ class Field(GameObject):
                 self.add_wall(mid)
         self.live_walls = []
         self.last_time = 0
+
+        # House
+        self.house = House(self)
     
     def repaint(self, screen, position):
         x, y = super().repaint(screen, position)
@@ -68,6 +72,9 @@ class Field(GameObject):
             pygame.draw.rect(screen, self.color, paint_e)
         for wall in self.live_walls:
             wall.repaint(screen, position)
+
+        # House
+        self.house.repaint(screen, position)            
     
     def add_wall(self, mid):
         a = (w + g) / 2
@@ -99,3 +106,13 @@ class Field(GameObject):
         else:
              return False
 
+class House(GameObject):
+    def __init__(self, master):
+        super().__init__(master)
+        self.image = house_image
+        self.total = 0
+
+    def repaint(self, screen, position):
+        # 相對於畫面正中心點的位置 (x, y) = (400, -4500)
+        x, y = super().repaint(screen, position)
+        screen.blit(house_image, (x - house_x/2, y - house_y/2 + 4780)) 
