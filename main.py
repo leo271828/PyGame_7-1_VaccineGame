@@ -107,7 +107,7 @@ class Main:
             # 判定存活與否
             if not play:
                 self.gameover(self.screen, tops)
-            elif self.player.blood <= 0:
+            elif self.player.blood <= 0 or timeup:
                 play = False
                 #音檔
                 tops = self.top(self.player.score)
