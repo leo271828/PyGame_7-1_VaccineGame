@@ -117,6 +117,8 @@ class House(GameObject):
         super().__init__(master)
         self.image = house_image
         self.total = 0
+        self.heart = 100
+        self.people = 100
         self.rect = pygame.Rect(0, 4700, house_x, house_y)
 
     def repaint(self, screen, position):
