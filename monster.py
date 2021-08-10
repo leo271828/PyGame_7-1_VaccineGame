@@ -142,7 +142,6 @@ class Zombie(Monster):
 
     def hit(self, power):
         self.key = self.player.get()
-        print(self.key, self.monster_key)
         if self.key == self.monster_key:
             super().hit(power)
     def kill(self):
