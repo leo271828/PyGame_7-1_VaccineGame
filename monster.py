@@ -64,7 +64,7 @@ class Monster(GameObject):
         self.field = self.master.master.field
         self.speed = 1
         self.angle = 0
-        self.color = [0, 255, 255]
+        self.color = [0, 0, 255]
         self.score = 5
         self.r = 30
         self.live = True
@@ -76,11 +76,6 @@ class Monster(GameObject):
         self.person  = pygame.transform.scale(Sick_person, (50, 50))
         self.image = self.person
         
-        if color:
-            self.color = color
-            self.image = self.red
-        else:
-            self.color = [random.randint(100, 255) for i in range(3)]
         if position:
             self.x, self.y = position
         else:
@@ -92,10 +87,8 @@ class Monster(GameObject):
             self.color = [255, 255, 0]
 
     def repaint(self, screen, position):
-        
         p = super().repaint(screen, position)
         screen.blit(self.image, (p))
-        #pygame.draw.circle(screen, self.color, p, self.r)
 
     def move(self, angle, step):
         self.x += step * math.cos(angle)
@@ -131,7 +124,6 @@ class Monster(GameObject):
             self.player.addPoint(self.score)
 
 
-
 class Zombie(Monster):
     def __init__(self, master):
         super().__init__(master)
@@ -144,11 +136,9 @@ class Zombie(Monster):
     def update(self):
         if self.range():
             self.near((self.player.x, self.player.y), self.speed)
-        #print(self.Gun_key,self.monster_key)
         super().update(lambda :self.field.touch(self) or self.master.touch(self, False))
         if not self.live:
             self.kill()
-            print(2)
 
     def hit(self, power):
         self.key = self.player.get()
@@ -196,14 +186,17 @@ class Sniper(Monster):
             self.gun.update()
         if not self.live :
             self.kill()
-            print(1)
+            
     def hit(self, power):
         self.key = self.player.get()
         print(self.key,self.monster_key)
         if self.key == self.monster_key:
+            self.player.addvaccine(random.randint(1,3))
             super().hit(power)
+            
     def kill(self):
         self.master.snipers.remove(self)
+        self.master.update_live()
         self.master.update_live()
         self.gun = None
 
