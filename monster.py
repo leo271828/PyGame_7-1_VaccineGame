@@ -188,7 +188,6 @@ class Sniper(Monster):
             
     def hit(self, power):
         self.key = self.player.get()
-        print(self.key,self.monster_key)
         if self.key == self.monster_key:
             self.player.addvaccine(random.randint(1,3))
             super().hit(power)
