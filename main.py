@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import time
 import pygame
 from pygame.locals import *
 from setting import *
@@ -88,6 +89,9 @@ class Main:
         '''主程序'''
         play = True     #設定遊戲狀態
         done = False
+        timeup = False
+        timelimit = 10  # sec
+        t0 = time.time()
         self.reset()
         pygame.mixer.init()
         #音檔
@@ -111,8 +115,32 @@ class Main:
             else:
                 self.update()
                 self.repaint(self.screen)
+                
+            # 到計時的部分
+            if not timeup and self.player.blood > 0:
+                f = pygame.font.SysFont('Comic Sans MS', 20)
+                t1 = time.time()
+                clock = t1 - t0
+                if clock >= timelimit:
+                    timeup = True
+                else:
+                    minute = int((timelimit-clock) // 60)
+                    second = (timelimit-clock) % 60
+                    second = '%02d' % second
+                # print(minute, second)
+                self.timer(f, minute, second)
+                
             self.clock.tick(30)
-
+            
+    # time label
+    def timer(self, f, minute, second, time_rect_size=60):
+        w, h = setting[0]
+        pygame.draw.rect(self.screen, (0, 0, 0, 0), (0, w - f.get_height(), time_rect_size, 80))
+        text_time = f.render(str(minute) + ':' + str(second), True, [255, 255, 255])
+        #print(minute, second)
+        self.screen.blit(text_time, ((time_rect_size - f.get_linesize() * 1.38) / 2, h - f.get_height()))
+        pygame.display.update()
+    
     # 其實也不用算排行 下面一坨也可以刪掉
     @staticmethod
     def top(score):
