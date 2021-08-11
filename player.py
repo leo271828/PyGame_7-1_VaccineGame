@@ -22,8 +22,7 @@ Player_image = pygame.image.load(os.path.join("images", "animalface_neko.png"))
 Alcohol_image = pygame.image.load(os.path.join("images", "alcohol.png"))
 Mask_image = pygame.image.load(os.path.join("images", "mask.png"))
 Vaccine_image = pygame.image.load(os.path.join("images", "vaccine.png"))
-House_image   = pygame.image.load(os.path.join("images", "house.png"))
-coverage_image = pygame.image.load(os.path.join("images", "vaccine_coverage.png"))
+
 class Player(GameObject):
     '''玩家物件，可以上下左右移動'''
 
@@ -65,8 +64,6 @@ class Player(GameObject):
 
         self.player = pygame.transform.scale(Player_image, (60, 60))
         self.vaccine = pygame.transform.scale(Vaccine_image, (40, 80))
-        self.house = pygame.transform.scale(House_image, (60, 60))
-        self.vaccine_coverage = pygame.transform.scale(coverage_image, (60, 60))
 
     def addvaccine(self, vaccine):
         self.sumvaccine += vaccine
@@ -87,13 +84,14 @@ class Player(GameObject):
         text_1 = font.render(': %s' % self.sumvaccine, True, [255, 255, 255])
         screen.blit(self.vaccine, (30, 30))
         screen.blit(text_1, (90, 50))
-        text_2  = font.render(':{0}%' .format(self.House.heart), True, [255, 255, 255])
-        screen.blit(self.house, (20, 110))
-        screen.blit(text_2, (90, 130))
 
-        text_3 = font.render(':{0}%' .format(self.House.total/self.House.people), True, [255, 255, 255])
-        screen.blit(self.vaccine_coverage, (20, 170))
-        screen.blit(text_3, (90, 190))
+        # text_2  = font.render(':{0}%' .format(self.House.heart), True, [255, 255, 255])
+        # screen.blit(self.house, (20, 110))
+        # screen.blit(text_2, (90, 130))
+
+        # text_3 = font.render(':{0}%' .format(self.House.total/self.House.people), True, [255, 255, 255])
+        # screen.blit(self.vaccine_coverage, (20, 170))
+        # screen.blit(text_3, (90, 190))
 
         b = -1
         # 繪製血量
