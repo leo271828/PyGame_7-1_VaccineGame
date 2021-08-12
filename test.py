@@ -1,2 +1,3 @@
-import math
-print(math.atan2(2, 2))
+x=10
+a = x - (10/12)
+print(int(round(a, 0)))

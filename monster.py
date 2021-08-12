@@ -5,15 +5,16 @@ import random
 import os
 
 from game_object import *
-from player import Gun, SniperGun
+from player import SniperGun
 from bullet import SniperBullet
 
 # 匯入圖片
 Virus_blue = pygame.image.load(os.path.join("images", "virus_blue.png"))
 Sick_person = pygame.image.load(os.path.join("images", "sick_person.png"))
 
+# 敵人數量
 z_capped = lambda x: 20 + x * 2
-s_capped = lambda x: 15 + x * 2
+s_capped = lambda x: 15 + x 
 
 
 class MonsterManager(Manager):

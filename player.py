@@ -21,7 +21,6 @@ distance = GameObject.setting[3]
 Player_image = pygame.image.load(os.path.join("images", "animalface_neko.png"))
 Alcohol_image = pygame.image.load(os.path.join("images", "alcohol.png"))
 Mask_image = pygame.image.load(os.path.join("images", "mask.png"))
-Vaccine_image = pygame.image.load(os.path.join("images", "vaccine.png"))
 
 class Player(GameObject):
     '''玩家物件，可以上下左右移動'''
@@ -43,7 +42,7 @@ class Player(GameObject):
         self.House = House(self)
         # 槍的切換
         self.gun_change = 1
-
+        self.gun_change_cd = 10 # 延遲換槍
         self.bullet = []
         self.shuting = False
         self.level_factor = [0, 9]
@@ -57,13 +56,12 @@ class Player(GameObject):
         self.blood = 5
         self.HP = 5
         self.DEF = 0
-        # 獲得疫苗總數
-        self.sumvaccine = 0
+        self.sumvaccine = 0 # 獲得疫苗總數
+        self.temp = 0 # 復活 house 多少血量
 
         # 圖片
-
         self.player = pygame.transform.scale(Player_image, (60, 60))
-        self.vaccine = pygame.transform.scale(Vaccine_image, (40, 80))
+        
 
     def addvaccine(self, vaccine):
         self.sumvaccine += vaccine
@@ -79,19 +77,7 @@ class Player(GameObject):
         for b in self.bullet:
             b.repaint(screen, position, self.gun_change)
 
-        # 獲得疫苗數
-        font = pygame.font.Font('data/freesansbold.ttf', 30)
-        text_1 = font.render(': %s' % self.sumvaccine, True, [255, 255, 255])
-        screen.blit(self.vaccine, (30, 30))
-        screen.blit(text_1, (90, 50))
 
-        # text_2  = font.render(':{0}%' .format(self.House.heart), True, [255, 255, 255])
-        # screen.blit(self.house, (20, 110))
-        # screen.blit(text_2, (90, 130))
-
-        # text_3 = font.render(':{0}%' .format(self.House.total/self.House.people), True, [255, 255, 255])
-        # screen.blit(self.vaccine_coverage, (20, 170))
-        # screen.blit(text_3, (90, 190))
 
         b = -1
         # 繪製血量
@@ -122,13 +108,18 @@ class Player(GameObject):
             self.v[0] += self.speed
         if self.iskey(K_a):
             self.v[0] += -self.speed
-        if self.iskey(K_f):
+
+        # 換槍需要 cd
+        if self.gun_change_cd != 10:
+            self.gun_change_cd += 1
+        if self.iskey(K_f) and (self.gun_change_cd == 10):
             if self.gun_change == 1:
                 self.gun = self.Player_mask
                 self.gun_change = 2
             else:
                 self.gun = self.Player_alcohol
                 self.gun_change = 1
+            self.gun_change_cd = 0
 
         super().update(lambda: self.master.field.touch(self))
         now = pygame.time.get_ticks()
