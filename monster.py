@@ -9,8 +9,11 @@ from player import SniperGun
 from bullet import SniperBullet
 
 # 匯入圖片
-Virus_blue = pygame.image.load(os.path.join("images", "virus_blue.png"))
 Sick_person = pygame.image.load(os.path.join("images", "sick_person.png"))
+enemy_easy = pygame.image.load(os.path.join("images", "enemy_easy.png"))
+enemy_middle = pygame.image.load(os.path.join("images", "enemy_middle.png"))
+enemy_hard = pygame.image.load(os.path.join("images", "enemy_hard.png"))
+enemywh = [60,60]
 
 # 敵人數量
 z_capped = lambda x: 20 + x * 2
@@ -73,8 +76,11 @@ class Monster(GameObject):
         self.power = 1.0
         self.range = lambda: 600 + self.player.level * 50 > self.distance(self)
         # 圖片
-        self.blue = pygame.transform.scale(Virus_blue, (40, 40))
-        self.person = pygame.transform.scale(Sick_person, (40, 40))
+        self.person = pygame.transform.scale(Sick_person, (enemywh))
+        self.enemy_easy = pygame.transform.scale(enemy_easy, (enemywh))
+        self.enemy_middle = pygame.transform.scale(enemy_middle, (enemywh))
+        self.enemy_hard = pygame.transform.scale(enemy_hard, (enemywh))
+
         self.image = self.person
 
         if position:
@@ -167,7 +173,7 @@ class Sniper(Monster):
         super().repaint(screen, position)
         self.gun.repaint(screen, position)
         # 更換圖片
-        self.image = self.blue
+        self.image = self.enemy_easy
 
     def update(self):
         x, y = self.x - self.player.x, self.y - self.player.y

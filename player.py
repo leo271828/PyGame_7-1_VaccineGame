@@ -60,7 +60,7 @@ class Player(GameObject):
         self.temp = 0 # 復活 house 多少血量
 
         # 圖片
-        self.player = pygame.transform.scale(Player_image, (60, 60))
+        self.player = pygame.transform.scale(Player_image, (player_wh))
         
 
     def addvaccine(self, vaccine):
@@ -71,7 +71,7 @@ class Player(GameObject):
         在此實做player的座標轉換是為了未來的鏡頭移動所準備，在實做此功能後，未來可維護性較高
         '''
         x, y = super().repaint(screen, position)
-        screen.blit(self.player, (x - 30, y - 30))
+        screen.blit(self.player, (x - player_wh[0]/2, y - player_wh[1]/2))
 
         self.gun.repaint(screen, position)
         for b in self.bullet:
@@ -85,6 +85,7 @@ class Player(GameObject):
             pygame.draw.rect(screen, [255, 0, 0], (x - 70 + 14 * b, y - 90, 10, 10))
         b += 1
         w = max(self.map(0, 1, 0, 10, (self.blood - int(self.blood))), 0)
+        #print(self.map(0, 1, 0, 10, (self.blood - int(self.blood))))
         if w:
             pygame.draw.rect(screen, [255, 0, 0], (x - 70 + 14 * b, y - 90, w, 10))
 
