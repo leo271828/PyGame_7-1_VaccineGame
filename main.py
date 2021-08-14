@@ -25,9 +25,9 @@ class Main:
         pygame.display.set_caption('疫情求生')
 
         # house blood
-        self.vaccine = pygame.transform.scale(pygame.image.load(os.path.join("images", "vaccine.png")), (40, 80))
+        self.vaccine = pygame.transform.scale(pygame.image.load(os.path.join("images", "vaccine_coverage.png")), (60, 60))
         self.house = pygame.transform.scale(pygame.image.load(os.path.join("images", "house.png")), (60, 60))
-        self.vaccine_coverage = pygame.transform.scale(pygame.image.load(os.path.join("images", "vaccine_coverage.png")), (60, 60))
+
 
         #物件初始化
         self.clock = pygame.time.Clock()
@@ -44,16 +44,14 @@ class Main:
         # 畫面左上角的疫苗資訊
         font = pygame.font.Font('data/freesansbold.ttf', 30)
         text_1 = font.render(': %s' % self.player.sumvaccine, True, [255, 255, 255])
-        screen.blit(self.vaccine, (30, 30))
+        screen.blit(self.vaccine, (20, 30))
         screen.blit(text_1, (90, 50))
 
         text_2  = font.render(' : {0}%' .format(int(round(self.field.house.heart, 0))), True, [255, 255, 255])
         screen.blit(self.house, (20, 110))
         screen.blit(text_2, (90, 130))
 
-        text_3 = font.render(' : {0}%' .format( int(100 * (self.field.house.total / self.field.house.people))), True, [255, 255, 255])
-        screen.blit(self.vaccine_coverage, (20, 170))
-        screen.blit(text_3, (90, 190))
+
 
         pygame.display.flip()
         pygame.display.update()

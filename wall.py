@@ -74,7 +74,8 @@ class Field(GameObject):
             wall.repaint(screen, position)
 
         # House
-        self.house.repaint(screen, position)            
+        self.house.repaint(screen, position)
+
     
     def add_wall(self, mid):
         a = (w + g) / 2
@@ -121,9 +122,15 @@ class House(GameObject):
         self.people = 100
         # house 的範圍 
         self.rect = pygame.Rect(0, 4700, house_x, house_y)
+        self.vaccine_coverage = pygame.transform.scale(pygame.image.load(os.path.join("images", "vaccine_coverage.png")), (60, 60))
 
     def repaint(self, screen, position):
         # 相對於畫面正中心點的位置 (x, y) = (400, -4500)
         x, y = super().repaint(screen, position)
         screen.blit(house_image, (x - house_x/2, y - house_y/2 + 4780)) 
         self.rect = pygame.Rect(0, 4700, house_x, house_y)
+
+        font = pygame.font.Font('data/freesansbold.ttf', 30)
+        text_3 = font.render(' : {0}%' .format( int(100 * (self.total / self.people))), True, [255, 255, 255])
+        screen.blit(self.vaccine_coverage, (x - house_x/2 + 100, y - house_y/2 + 4680))
+        screen.blit(text_3, (x - house_x/2 + 160, y - house_y/2 + 4700))
