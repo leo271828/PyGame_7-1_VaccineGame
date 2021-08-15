@@ -136,7 +136,7 @@ class Main:
                 
             # 到計時的部分
             if not timeup and self.player.blood > 0:
-                f = pygame.font.SysFont('Comic Sans MS', 20)
+                f = pygame.font.SysFont('Comic Sans MS', 50)
                 t1 = time.time()
                 clock = t1 - t0
                 if clock >= timelimit:
@@ -165,12 +165,12 @@ class Main:
                 
             
     # time label
-    def timer(self, f, minute, second, time_rect_size=60):
+    def timer(self, f, minute, second, time_rect_size=100):
         #w, h = setting[0]
-        pygame.draw.rect(self.screen, (0, 0, 0, 0), (0, wh[0] - f.get_height(), time_rect_size, 80))
+        pygame.draw.rect(self.screen, (0, 0, 0, 0), (0, wh[0] - f.get_height(), time_rect_size, 100))
         text_time = f.render(str(minute) + ':' + str(second), True, [255, 255, 255])
         #print(minute, second)
-        self.screen.blit(text_time, ((time_rect_size - f.get_linesize() * 1.38) / 2, wh[1] - f.get_height()))
+        self.screen.blit(text_time, ((wh[0]-time_rect_size-20,0))
         pygame.display.update()
 
     def intro(self):
