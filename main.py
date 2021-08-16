@@ -136,6 +136,10 @@ class Main:
         self.reset()
         pygame.mixer.init()
         # 音檔
+        background_sound = pygame.mixer.Sound('data/sound/background.mp3')
+        background_sound.set_volume(0.2)
+        background_sound.play(-1)
+        
         while not self.done:
             self.clock.tick(FPS)
             for event in pygame.event.get():
@@ -144,6 +148,10 @@ class Main:
                 # 按下滑鼠攻擊
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.player.shut()
+                    #音檔
+                    shoot_sound = pygame.mixer.Sound('data/sound/shoot.mp3')
+                    shoot_sound.set_volume(0.2)
+                    shoot_sound.play(-1)
                 
             if self.player.blood <= 0 or self.field.house.heart <= 0 or timeup: # Lose
                 play = 0
