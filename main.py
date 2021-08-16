@@ -161,6 +161,10 @@ class Main:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.done = True
+                # 按下滑鼠攻擊
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.player.shut()
+                
             # 判定存活與否，欸乾這裡幹嘛分成三個狀況? 不就死或沒死嗎?
             
             if play == 0:
