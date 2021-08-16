@@ -139,4 +139,4 @@ class House(GameObject):
         text_3 = font.render(' : {0}%' .format( int(100 * (self.total / self.people))), True, [255, 255, 255])
         screen.blit(self.vaccine_coverage, (x + dx + 100, y + dy - 20))
         screen.blit(text_3, (x + dx + 160, y + dy))
-        print(self.loc)
+        #print(self.loc)
