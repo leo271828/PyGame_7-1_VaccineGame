@@ -133,6 +133,7 @@ class Player(GameObject):
 
     def shut(self):
         # 沒有在發射中，代表是第一次執行
+        #音檔
         self.shoot_sound = pygame.mixer.Sound('data/sound/shoot.mp3')
         self.shoot_sound.set_volume(0.2)
         self.shoot_sound.play()
