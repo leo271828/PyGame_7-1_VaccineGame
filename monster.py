@@ -16,8 +16,8 @@ enemy_hard = pygame.image.load(os.path.join("images", "enemy_hard.png"))
 
 
 # 敵人數量
-z_capped = lambda x: 50 + x * 2
-s_capped = lambda x: 15 + x 
+z_capped = lambda x: 10 + x*2
+s_capped = lambda x: 50 + x*5
 
 
 class MonsterManager(Manager):
