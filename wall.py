@@ -136,7 +136,10 @@ class House(GameObject):
         self.rect = pygame.Rect(dx, dy, house_x, house_y)
 
         font = pygame.font.Font('data/freesansbold.ttf', 30)
-        text_3 = font.render(' : {0}%' .format( int(100 * (self.total / self.people))), True, [255, 255, 255])
+        if int(100 * (self.total / self.people)) >= 100:
+            text_3 = font.render(' : 100%', True, [255, 255, 255])
+        else:
+            text_3 = font.render(' : {0}%' .format( int(100 * (self.total / self.people))), True, [255, 255, 255])
         screen.blit(self.vaccine_coverage, (x + dx + 100, y + dy - 20))
         screen.blit(text_3, (x + dx + 160, y + dy))
         #print(self.loc)
