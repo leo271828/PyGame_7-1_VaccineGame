@@ -58,8 +58,6 @@ class Main:
         screen.blit(self.house, (20, 110))
         screen.blit(text_2, (90, 130))
 
-
-
         pygame.display.flip()
         pygame.display.update()
 
@@ -72,63 +70,43 @@ class Main:
         self.stuff.update()
         # 升級機制
 
-    def gameover(self, screen):
+    def gameover(self, screen, play):
         '''結束畫面'''
-        # monster還未完成所以未加進來
-        screen.blit(background_image,(0,0)) #增
-        position = (self.player.x, self.player.y)
-        self.field.repaint(screen, position)
-        self.monster.repaint(screen, position)
-        self.player.repaint(screen, position)
-        self.stuff.repaint(screen, position)
+        if play == 1:
+            return
         f = pygame.font.Font('data/freesansbold.ttf', 70)
         f2 = pygame.font.Font('data/freesansbold.ttf', 50)
-        text1 = f.render('Game Over', True, [255, 255, 0])
-        text2 = f2.render('Vaccine coverage: {} %' .format(self.field.house.total ), True, self.player.color)
-        rect1 = text1.get_rect()
-        rect2 = text2.get_rect()
-        rect1.center = [wh[0] / 2, wh[1] / 2 - 150]
-        rect2.center = [wh[0] / 2, wh[1] / 2 - 50]
-        screen.blit(text1, rect1)
-        screen.blit(text2, rect2)
         f3 = pygame.font.Font('data/freesansbold.ttf', 30)
-        text3 = f3.render('Enter to restart', True, [128,138,135])
-        rect3 = text3.get_rect()
-        rect3.center = [wh[0] / 2 +250, wh[1] / 2 +250]
-        screen.blit(text3, rect3)
-        pygame.display.flip()
-        pygame.display.update()
 
-        self.again()
+        if play == 0:
+            text1 = f.render('Game Over', True, [255, 255, 0])
+            text2 = f2.render('Vaccine coverage: {} %' .format(self.field.house.total ), True, self.player.color)
+            text3 = f3.render('Enter to restart', True, [128,138,135])
 
+        else :
+            text1 = f.render('You Win', True, [255, 255, 0])
+            text2 = f2.render('Vaccine coverage: 100 %', True, self.player.color)
+            text3 = f3.render('Enter to restart', True, [128,138,135])
 
-    def gamewin(self,screen):
-        '''結束畫面'''
-        # monster還未完成所以未加進來
-        screen.blit(background_image, (0, 0))  # 增
+        screen.blit(background_image,(0,0)) # 增
         position = (self.player.x, self.player.y)
         self.field.repaint(screen, position)
         self.monster.repaint(screen, position)
         self.player.repaint(screen, position)
         self.stuff.repaint(screen, position)
-        f = pygame.font.Font('data/freesansbold.ttf', 70)
-        f2 = pygame.font.Font('data/freesansbold.ttf', 50)
-        text1 = f.render('You Win', True, [255, 255, 0])
-        text2 = f2.render('Vaccine coverage: 100 %', True, self.player.color)
+
         rect1 = text1.get_rect()
         rect2 = text2.get_rect()
+        rect3 = text3.get_rect()
         rect1.center = [wh[0] / 2, wh[1] / 2 - 150]
         rect2.center = [wh[0] / 2, wh[1] / 2 - 50]
+        rect3.center = [wh[0] / 2 +250, wh[1] / 2 +250]
         screen.blit(text1, rect1)
         screen.blit(text2, rect2)
-        f3 = pygame.font.Font('data/freesansbold.ttf', 50)
-        text3 = f3.render('Enter to restart', True, [128,138,135])
-        rect3 = text3.get_rect()
-        rect3.center = [wh[0] / 2 +250, wh[1] / 2 +250]
         screen.blit(text3, rect3)
+
         pygame.display.flip()
         pygame.display.update()
-
         self.again()
         
     def again(self):
@@ -156,31 +134,31 @@ class Main:
         house_time = 0
         self.reset()
         pygame.mixer.init()
-        #音檔
+        # 音檔
         background_sound = pygame.mixer.Sound('data/sound/background.mp3')
         background_sound.set_volume(0.2)
         background_sound.play(-1)
+        self.shoot_sound = pygame.mixer.Sound('data/sound/shoot.mp3')
+        self.shoot_sound.set_volume(0.2)
 
         while not self.done:
             self.clock.tick(FPS)
-            # 這裡 e 我改成 event 因為這樣比較屌
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.done = True
                 # 按下滑鼠攻擊
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    # 音檔
                     self.player.shut()
-                    #音檔
-                    #shoot_sound = pygame.mixer.Sound('data/sound/shoot.mp3')
-                    #shoot_sound.set_volume(0.2)
-                    #shoot_sound.play(-1)
-            # 判定存活與否，欸乾這裡幹嘛分成三個狀況? 不就死或沒死嗎?
+            self.shoot_sound.stop()
+
             if play == 0:
-                self.gameover(self.screen)
+                self.gameover(self.screen,play)
                 background_sound.stop()
             elif play == 2:
-                self.gamewin(self.screen)
-            elif self.player.blood <= 0 or self.field.house.heart <=0 or timeup:
+                self.gameover(self.screen,play)
+                background_sound.stop()
+            elif self.player.blood <= 0 or self.field.house.heart <= 0 or timeup:
                 play = 0
                 # 音檔
                 lose_sound = pygame.mixer.Sound('data/sound/lose.wav')
@@ -195,9 +173,9 @@ class Main:
             else:
                 self.update()
                 self.repaint(self.screen)
-                
+            
             # 到數計時的部分
-            if not timeup and self.player.blood > 0:
+            if (not timeup and self.player.blood > 0) and (play == 1) :
                 f = pygame.font.SysFont('Comic Sans MS', 50)
                 t1 = time.time()
                 clock = t1 - t0
