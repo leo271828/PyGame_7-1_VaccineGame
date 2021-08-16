@@ -133,15 +133,19 @@ class Player(GameObject):
 
     def shut(self):
         # 沒有在發射中，代表是第一次執行
+        self.shoot_sound = pygame.mixer.Sound('data/sound/shoot.mp3')
+        self.shoot_sound.set_volume(0.2)
+        self.shoot_sound.play()
         if not self.shuting:
             self.shuting = True
             self.gun.shuting = True
         # 按鍵放開，結束發射模式
         elif not self.iskey(K_SPACE):
             self.bullet.append(PlayerBullet(self, power=self.power * self.cooldown))
-            self.move(self.gun.angle, -6)
+            self.move(self.gun.angle, -2)
             self.shuting = False
             self.last_shut = pygame.time.get_ticks()
+
 
     def hit(self, person):
         self.last_time = pygame.time.get_ticks()
