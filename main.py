@@ -11,17 +11,10 @@ import wall
 import monster
 import stuff
 
-screen = pygame.display.set_mode(wh)#增
 setting = [wh, bg, speed, distance, field_wh]
 #bg = setting[1]     
 wh = setting[0]     # [width, height]
 background_image = pygame.transform.scale(pygame.image.load(os.path.join("images", "bg_chiheisen_green1.jpg")),(800,600)) #增
-intro_image = pygame.transform.scale(pygame.image.load(os.path.join("images", "intro.png")),(800,600)) #增加超棒的遊戲說明圖片
-intro_move = pygame.transform.scale(pygame.image.load(os.path.join("images", "intro_move.png")),(800,600)) 
-intro_attack = pygame.transform.scale(pygame.image.load(os.path.join("images", "intro_attack.png")),(800,600)) 
-intro_home = pygame.transform.scale(pygame.image.load(os.path.join("images", "intro_home.png")),(800,600)) 
-intro_list = [intro_home,intro_attack,intro_move,intro_image]
-
 FPS  =30
 
 class Main:
@@ -136,7 +129,7 @@ class Main:
                 
             # 到計時的部分
             if not timeup and self.player.blood > 0:
-                f = pygame.font.SysFont('Comic Sans MS', 50)
+                f = pygame.font.SysFont('Comic Sans MS', 20)
                 t1 = time.time()
                 clock = t1 - t0
                 if clock >= timelimit:
@@ -165,37 +158,13 @@ class Main:
                 
             
     # time label
-    def timer(self, f, minute, second, time_rect_size=100):
+    def timer(self, f, minute, second, time_rect_size=60):
         #w, h = setting[0]
-        pygame.draw.rect(self.screen, (0, 0, 0, 0), (0, wh[0] - f.get_height(), time_rect_size, 100))
+        pygame.draw.rect(self.screen, (0, 0, 0, 0), (0, wh[0] - f.get_height(), time_rect_size, 80))
         text_time = f.render(str(minute) + ':' + str(second), True, [255, 255, 255])
         #print(minute, second)
-        self.screen.blit(text_time, ((wh[0]-time_rect_size-20,0))
+        self.screen.blit(text_time, ((time_rect_size - f.get_linesize() * 1.38) / 2, wh[1] - f.get_height()))
         pygame.display.update()
 
-    def intro(self):
-        i = 0
-        done = True
-        image = intro_list.pop()
-        while done:
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = False
-                
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
-                        i += 1
-                        if i <= 3:
-                            image = intro_list.pop()
-                        else:
-                            self.in_intro = False
-                            done = False
-
-                screen.blit(image,(0,0))    
-                pygame.display.update()
-
 root = Main()
-root.intro()
-if not root.in_intro:
-    root.begin()
+root.begin()
