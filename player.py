@@ -60,7 +60,7 @@ class Player(GameObject):
         self.temp = 0 # 復活 house 多少血量
 
         # 圖片
-        self.player = pygame.transform.scale(Player_image, (player_wh))
+        self.player = pygame.transform.scale(Player_image, player_wh)
         
 
     def addvaccine(self, vaccine):
@@ -180,7 +180,7 @@ class Gun(GameObject):
             newpoint.append((nx, ny))
         color = [c * self.master.cooldown for c in self.master.color] if type(
             self.master).__name__ == 'Player' else self.master.color
-        pygame.draw.polygon(screen, color, newpoint)
+        pygame.draw.polygon(screen, (255, 255, 0), newpoint)
 
     def Player_repaint(self, screen, position):
         x, y = super().repaint(screen, position)

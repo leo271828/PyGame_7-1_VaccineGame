@@ -84,7 +84,7 @@ class Main:
         f = pygame.font.Font('data/freesansbold.ttf', 70)
         f2 = pygame.font.Font('data/freesansbold.ttf', 50)
         text1 = f.render('Game Over', True, [255, 255, 0])
-        text2 = f2.render('Vaccine coverage: {} %' .format(self.field.house.total ), True, self.player.color)
+        text2 = f2.render('Vaccine coverage: {} %' .format(self.field.house.total), True, self.player.color)
         rect1 = text1.get_rect()
         rect2 = text2.get_rect()
         rect1.center = [wh[0] / 2, wh[1] / 2 - 150]
@@ -95,27 +95,6 @@ class Main:
         pygame.display.flip()
         pygame.display.update()
 
-    def gamewin(self,screen):
-        '''結束畫面'''
-        # monster還未完成所以未加進來
-        screen.blit(background_image, (0, 0))  # 增
-        position = (self.player.x, self.player.y)
-        self.field.repaint(screen, position)
-        self.monster.repaint(screen, position)
-        self.player.repaint(screen, position)
-        self.stuff.repaint(screen, position)
-        f = pygame.font.Font('data/freesansbold.ttf', 70)
-        f2 = pygame.font.Font('data/freesansbold.ttf', 50)
-        text1 = f.render('You Win', True, [255, 255, 0])
-        text2 = f2.render('Vaccine coverage: 100 %', True, self.player.color)
-        rect1 = text1.get_rect()
-        rect2 = text2.get_rect()
-        rect1.center = [wh[0] / 2, wh[1] / 2 - 150]
-        rect2.center = [wh[0] / 2, wh[1] / 2 - 50]
-        screen.blit(text1, rect1)
-        screen.blit(text2, rect2)
-        pygame.display.flip()
-        pygame.display.update()
     def reset(self):
         # monster還未完成所以未加進來
         self.field = wall.Field(self)
@@ -127,7 +106,7 @@ class Main:
 
     def begin(self):
         '''主程序'''
-        play = 1     #設定遊戲狀態
+        play = True     #設定遊戲狀態
         done = False
         timeup = False
         timelimit = 180  # sec
@@ -138,7 +117,6 @@ class Main:
         #音檔
         while not done:
             self.clock.tick(FPS)
-            # 這裡 e 我改成 event 因為這樣比較屌
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
@@ -147,19 +125,15 @@ class Main:
                     self.player.shut()
 
             # 判定存活與否，欸乾這裡幹嘛分成三個狀況? 不就死或沒死嗎?
-            if play == 0:
+            if not play:
                 self.gameover(self.screen)
-            elif play == 2:
-                self.gamewin(self.screen)
-            elif self.player.blood <= 0 or timeup :
-                play = 0
-            elif self.field.house.total >= 100:
-                play = 2
+            elif self.player.blood <= 0 or self.field.house.heart <=0 or timeup:
+                play = False
             else:
                 self.update()
                 self.repaint(self.screen)
-
-            # 到計時的部分
+                
+            # 到數計時的部分
             if not timeup and self.player.blood > 0:
                 f = pygame.font.SysFont('Comic Sans MS', 50)
                 t1 = time.time()
@@ -217,7 +191,7 @@ class Main:
                             self.in_intro = False
                             done = False
 
-                screen.blit(image,(0,0))
+                screen.blit(image,(0,0))    
                 pygame.display.update()
 
 root = Main()

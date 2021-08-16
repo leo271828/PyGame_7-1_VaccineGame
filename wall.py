@@ -1,7 +1,9 @@
 import pygame
-import os #增
+import random
+import os
 from pygame.locals import *
 from pygame import Rect
+from setting import *
 
 from game_object import GameObject
 
@@ -123,14 +125,18 @@ class House(GameObject):
         # house 的範圍 
         self.rect = pygame.Rect(0, 4700, house_x, house_y)
         self.vaccine_coverage = pygame.transform.scale(pygame.image.load(os.path.join("images", "vaccine_coverage.png")), (60, 60))
+        self.loc = [random.randrange(-1, 2, 2), random.randrange(-1, 2, 2)]
 
     def repaint(self, screen, position):
-        # 相對於畫面正中心點的位置 (x, y) = (400, -4500)
+        # 相對於畫面正中心點的位置 (x, y)
         x, y = super().repaint(screen, position)
-        screen.blit(house_image, (x - house_x/2, y - house_y/2 + 4780)) 
-        self.rect = pygame.Rect(0, 4700, house_x, house_y)
+        dx, dy = (self.loc[0]*(field_wh[0] - 300) - house_x/2), (self.loc[1]*(field_wh[1] - 300) - house_y/2)
+        house_location = [x + dx, y + dy]
+        screen.blit(house_image, house_location) 
+        self.rect = pygame.Rect(dx, dy, house_x, house_y)
 
         font = pygame.font.Font('data/freesansbold.ttf', 30)
         text_3 = font.render(' : {0}%' .format( int(100 * (self.total / self.people))), True, [255, 255, 255])
-        screen.blit(self.vaccine_coverage, (x - house_x/2 + 100, y - house_y/2 + 4680))
-        screen.blit(text_3, (x - house_x/2 + 160, y - house_y/2 + 4700))
+        screen.blit(self.vaccine_coverage, (x + dx + 100, y + dy - 20))
+        screen.blit(text_3, (x + dx + 160, y + dy))
+        print(self.loc)

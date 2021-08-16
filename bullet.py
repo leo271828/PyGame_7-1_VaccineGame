@@ -61,8 +61,6 @@ class PlayerBullet(Bullet):
             self.mask = pygame.transform.scale(Mask_image, (50, 50))
             self.image = self.mask
     def update(self):
-        # 其實我看不懂這個 f 
-        # monster.的部分還沒加進來
         f = lambda:self.master.master.field.touch(self) or self.master.master.monster.touch(self)
         super().update(f)
 
@@ -74,6 +72,7 @@ class SniperBullet(Bullet):
     def __init__(self, master, speed=30):
         super().__init__(master, speed)
         self.score = 0
+        self.color = [255, 255, 0]
 
     def update(self):
         f = lambda:self.master.field.touch(self)

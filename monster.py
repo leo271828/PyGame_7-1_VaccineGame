@@ -13,10 +13,10 @@ Sick_person = pygame.image.load(os.path.join("images", "sick_person.png"))
 enemy_easy = pygame.image.load(os.path.join("images", "enemy_easy.png"))
 enemy_middle = pygame.image.load(os.path.join("images", "enemy_middle.png"))
 enemy_hard = pygame.image.load(os.path.join("images", "enemy_hard.png"))
-enemywh = [60,60]
+
 
 # 敵人數量
-z_capped = lambda x: 20 + x * 2
+z_capped = lambda x: 50 + x * 2
 s_capped = lambda x: 15 + x 
 
 
@@ -29,6 +29,7 @@ class MonsterManager(Manager):
         self.snipers = []
         self.bullet = []
         self.live = []
+        self.color = [0, 255, 255]
 
     def update(self):
         if pygame.time.get_ticks() - self.last_time > 1000:
@@ -70,16 +71,16 @@ class Monster(GameObject):
         self.speed = 1
         self.angle = 0
         self.color = [0, 0, 255]
-        self.r = 30
+        self.r = enemy_wh[0]
         self.live = True
         self.blood = 1.0
         self.power = 1.0
         self.range = lambda: 600 + self.player.level * 50 > self.distance(self)
         # 圖片
-        self.person = pygame.transform.scale(Sick_person, (enemywh))
-        self.enemy_easy = pygame.transform.scale(enemy_easy, (enemywh))
-        self.enemy_middle = pygame.transform.scale(enemy_middle, (enemywh))
-        self.enemy_hard = pygame.transform.scale(enemy_hard, (enemywh))
+        self.person = pygame.transform.scale(Sick_person, enemy_wh)
+        self.enemy_easy = pygame.transform.scale(enemy_easy, enemy_wh)
+        self.enemy_middle = pygame.transform.scale(enemy_middle, enemy_wh)
+        self.enemy_hard = pygame.transform.scale(enemy_hard, enemy_wh)
 
         self.image = self.person
 
