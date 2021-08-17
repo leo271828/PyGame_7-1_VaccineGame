@@ -22,7 +22,12 @@ intro_attack = pygame.transform.scale(pygame.image.load(os.path.join("images", "
 intro_home = pygame.transform.scale(pygame.image.load(os.path.join("images", "intro_home.png")),(800,600)) 
 intro_list = [intro_home,intro_attack,intro_move,intro_image]
 
+mute_btn = pygame.transform.scale(pygame.image.load(os.path.join("images", "muse.png")),(80,80)) #音檔
+sound_btn  = pygame.transform.scale(pygame.image.load(os.path.join("images", "sound.png")),(80,80)) #音檔
+
+
 FPS  =30
+
 
 class Main:
     '''負責掌控主程序'''
@@ -34,6 +39,12 @@ class Main:
         # house blood
         self.vaccine = pygame.transform.scale(pygame.image.load(os.path.join("images", "vaccine_coverage.png")), (60, 60))
         self.house = pygame.transform.scale(pygame.image.load(os.path.join("images", "house.png")), (60, 60))
+        self.sound_btn = sound_btn
+        self.mute_btn  = mute_btn
+        self.mute_rect = pygame.Rect(720,100,80,80)
+        self.sound_rect = pygame.Rect(640,100,80,80)
+        print(self.mute_rect)
+        print(self.sound_rect)
 
 
         #物件初始化
@@ -58,17 +69,21 @@ class Main:
         screen.blit(self.house, (20, 110))
         screen.blit(text_2, (90, 130))
 
+        #音檔
+        screen.blit(self.mute_btn,(720,100))
+        screen.blit(self.sound_btn, (640,100))
+
+
         pygame.display.flip()
         pygame.display.update()
 
     def update(self):
         '''物件更新'''
-        # monster還未完成所以未加進來
         self.player.update()
         self.monster.update()
         self.field.update()
         self.stuff.update()
-        # 升級機制
+
 
     def gameover(self, screen, play):
         '''結束畫面'''
@@ -143,14 +158,24 @@ class Main:
 
         while not self.done:
             self.clock.tick(FPS)
+            x, y = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.done = True
                 # 按下滑鼠攻擊
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    # 音檔
-                    self.player.shut()
-            self.shoot_sound.stop()
+                    if self.mute_rect.collidepoint(x,y):
+                        background_sound.stop()
+                        self.shoot_sound.set_volume(0)
+                        #print(1)
+                    if self.sound_rect.collidepoint(x,y):
+                        background_sound.play()
+                        self.shoot_sound.set_volume(0.2)
+                        #print(2)
+                    else:
+                        self.player.shut()
+                        # 音檔
+                        self.shoot_sound.play()
 
             if play == 0:
                 self.gameover(self.screen,play)
