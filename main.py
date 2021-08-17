@@ -39,13 +39,11 @@ class Main:
         # house blood
         self.vaccine = pygame.transform.scale(pygame.image.load(os.path.join("images", "vaccine_coverage.png")), (60, 60))
         self.house = pygame.transform.scale(pygame.image.load(os.path.join("images", "house.png")), (60, 60))
+        #按鈕
         self.sound_btn = sound_btn
         self.mute_btn  = mute_btn
         self.mute_rect = pygame.Rect(720,100,80,80)
         self.sound_rect = pygame.Rect(640,100,80,80)
-        print(self.mute_rect)
-        print(self.sound_rect)
-
 
         #物件初始化
         self.clock = pygame.time.Clock()
@@ -149,6 +147,7 @@ class Main:
         house_time = 0
         self.reset()
         pygame.mixer.init()
+
         # 音檔
         background_sound = pygame.mixer.Sound('data/sound/background.mp3')
         background_sound.set_volume(0.2)
@@ -165,13 +164,13 @@ class Main:
                 # 按下滑鼠攻擊
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.mute_rect.collidepoint(x,y):
+                        #音檔
                         background_sound.stop()
                         self.shoot_sound.set_volume(0)
-                        #print(1)
                     if self.sound_rect.collidepoint(x,y):
+                        #音檔
                         background_sound.play()
                         self.shoot_sound.set_volume(0.2)
-                        #print(2)
                     else:
                         self.player.shut()
                         # 音檔
