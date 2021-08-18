@@ -71,11 +71,11 @@ class Monster(GameObject):
         self.speed = 1
         self.angle = 0
         self.color = [0, 0, 255]
-        self.r = enemy_wh[0]
+        self.r = enemy_wh[0]//2
         self.live = True
         self.blood = 1.0
         self.power = 1.0
-        self.range = lambda: 600 + self.player.level * 50 > self.distance(self)
+        self.range = lambda: 600  > self.distance(self)
         # 圖片
         self.person = pygame.transform.scale(Sick_person, enemy_wh)
         self.enemy_easy = pygame.transform.scale(enemy_easy, enemy_wh)
@@ -95,8 +95,8 @@ class Monster(GameObject):
             self.color = [255, 255, 0]
 
     def repaint(self, screen, position):
-        p = super().repaint(screen, position)
-        screen.blit(self.image, (p))
+        x,y = super().repaint(screen, position)
+        screen.blit(self.image, (x - enemy_wh[0] // 2,y - enemy_wh[1]//2))
 
     def move(self, angle, step):
         self.x += step * math.cos(angle)

@@ -47,6 +47,16 @@ class Main:
 
         #物件初始化
         self.clock = pygame.time.Clock()
+        # 音檔
+        pygame.mixer.music.load('data/sound/background.wav')
+        pygame.mixer.music.set_volume(0.2)
+
+        self.shoot_sound = pygame.mixer.Sound('data/sound/shoot.wav')
+        self.shoot_sound.set_volume(0.2)
+        self.lose_sound = pygame.mixer.Sound('data/sound/lose.wav')
+        self.lose_sound.set_volume(0.2)
+        self.win_sound = pygame.mixer.Sound('data/sound/win.wav')
+        self.win_sound.set_volume(0.2)
 
     def repaint(self, screen):
         '''將各個物件顯示到螢幕上。position為視野的座標，將此變數傳到各個物件，使物件在相對於座標的地方進行繪圖。repaint繼承自GameObject'''
@@ -126,8 +136,10 @@ class Main:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
+                    self.win_sound.stop()
+                    self.lose_sound.stop()
                     root.begin()
-    
+
     def reset(self):
         # monster還未完成所以未加進來
         self.field = wall.Field(self)
@@ -147,13 +159,7 @@ class Main:
         house_time = 0
         self.reset()
         pygame.mixer.init()
-
-        # 音檔
-        pygame.mixer.music.load('data/sound/background.wav')
-        pygame.mixer.music.set_volume(0.2)
         pygame.mixer.music.play(-1)
-        self.shoot_sound = pygame.mixer.Sound('data/sound/shoot.wav')
-        self.shoot_sound.set_volume(0.2)
 
         while not self.done:
             self.clock.tick(FPS)
@@ -185,15 +191,11 @@ class Main:
             elif self.player.blood <= 0 or self.field.house.heart <= 0 or timeup:
                 play = 0
                 # 音檔
-                lose_sound = pygame.mixer.Sound('data/sound/lose.wav')
-                lose_sound.set_volume(0.2)
-                lose_sound.play()
+                self.lose_sound.play()
             elif self.field.house.total >= 100:
                 play = 2
                 # 音檔
-                win_sound = pygame.mixer.Sound('data/sound/win.wav')
-                win_sound.set_volume(0.2)
-                win_sound.play()
+                self.win_sound.play()
             else:
                 self.update()
                 self.repaint(self.screen)

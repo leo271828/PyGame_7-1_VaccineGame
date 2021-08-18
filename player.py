@@ -77,8 +77,6 @@ class Player(GameObject):
         for b in self.bullet:
             b.repaint(screen, position, self.gun_change)
 
-
-
         b = -1
         # 繪製血量
         for b in range(int(self.blood)):
@@ -125,7 +123,6 @@ class Player(GameObject):
         super().update(lambda: self.master.field.touch(self))
         now = pygame.time.get_ticks()
         self.cooldown = self.map(0, self.CD, 0, 1, min(now - self.last_shut, self.CD))
-
         # 如果正在發射狀態就執行
         if self.shuting:
             self.shut()

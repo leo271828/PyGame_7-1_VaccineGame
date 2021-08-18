@@ -71,7 +71,7 @@ class Field(GameObject):
             paint_e = e.copy()
             paint_e.x += x
             paint_e.y += y
-            pygame.draw.rect(screen, self.color, paint_e)
+            pygame.draw.rect(screen,[156,168,184], paint_e)
         for wall in self.live_walls:
             wall.repaint(screen, position)
 
@@ -110,10 +110,10 @@ class Field(GameObject):
             y = min(r.y+r.h, person.y)
             y = max(r.y, y)
             distance = ((person.x - x)**2 + (person.y - y)**2) ** 0.5
-            if distance < person.r:
+            if distance < person.r+30:
                 return True
-        else:
-             return False
+            else:
+                return False
 
 class House(GameObject):
     def __init__(self, master):
