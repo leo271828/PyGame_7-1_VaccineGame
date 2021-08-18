@@ -149,10 +149,10 @@ class Main:
         pygame.mixer.init()
 
         # 音檔
-        background_sound = pygame.mixer.Sound('data/sound/background.mp3')
-        background_sound.set_volume(0.2)
-        background_sound.play(-1)
-        self.shoot_sound = pygame.mixer.Sound('data/sound/shoot.mp3')
+        pygame.mixer.music.load('data/sound/background.wav')
+        pygame.mixer.music.set_volume(0.2)
+        pygame.mixer.music.play(-1)
+        self.shoot_sound = pygame.mixer.Sound('data/sound/shoot.wav')
         self.shoot_sound.set_volume(0.2)
 
         while not self.done:
@@ -165,11 +165,11 @@ class Main:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.mute_rect.collidepoint(x,y):
                         #音檔
-                        background_sound.stop()
+                        pygame.mixer.music.pause()
                         self.shoot_sound.set_volume(0)
                     if self.sound_rect.collidepoint(x,y):
                         #音檔
-                        background_sound.play()
+                        pygame.mixer.music.unpause()
                         self.shoot_sound.set_volume(0.2)
                     else:
                         self.player.shut()
@@ -178,10 +178,10 @@ class Main:
 
             if play == 0:
                 self.gameover(self.screen,play)
-                background_sound.stop()
+                pygame.mixer.music.stop()
             elif play == 2:
                 self.gameover(self.screen,play)
-                background_sound.stop()
+                pygame.mixer.music.stop()
             elif self.player.blood <= 0 or self.field.house.heart <= 0 or timeup:
                 play = 0
                 # 音檔
@@ -191,7 +191,7 @@ class Main:
             elif self.field.house.total >= 100:
                 play = 2
                 # 音檔
-                win_sound = pygame.mixer.Sound('data/sound/win.mp3')
+                win_sound = pygame.mixer.Sound('data/sound/win.wav')
                 win_sound.set_volume(0.2)
                 win_sound.play()
             else:
