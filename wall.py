@@ -112,8 +112,8 @@ class Field(GameObject):
             distance = ((person.x - x)**2 + (person.y - y)**2) ** 0.5
             if distance < person.r+30:
                 return True
-            else:
-                return False
+        else:
+            return False
 
 class House(GameObject):
     def __init__(self, master):
